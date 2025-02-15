@@ -1,7 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
 
-
 app = FastAPI()
 
 @app.get("/")
@@ -30,7 +29,6 @@ async def divide(num1: float, num2: float):
     if num2 == 0:
         return {"error": "Cannot divide by zero"}
     return {"result": num1 / num2}
-
 
 if __name__ == "__main__":
     uvicorn.run(
