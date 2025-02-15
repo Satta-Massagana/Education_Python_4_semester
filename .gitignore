@@ -1,1 +1,2 @@
-venv/
+.venv/
+Homework_1/__pycache__
