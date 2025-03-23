@@ -1,0 +1,6 @@
+user_id,first_name,last_name,login,email,password_hash,created_at,active
+1,john,doe,john_doe,john.doe@example.com,$2b$12$...hashed_password...,2023-01-01 12:00:00,TRUE
+2,jane,smith,jane_smith,jane.smith@example.com,$2b$12$...hashed_password...,2023-02-15 14:30:00,TRUE
+3,ivan,petrov,ivan_petrov,ivan.petrov@example.com,$2b$12$...hashed_password...,2023-03-20 09:45:00,TRUE
+4,alice,johnson,alice_johnson,alice.johnson@example.com,$2b$12$...hashed_password...,2023-04-05 11:15:00,TRUE
+5,admin,admin,admin,admin@example.com,$2b$12$...hashed_password...,2023-05-10 16:00:00,TRUE

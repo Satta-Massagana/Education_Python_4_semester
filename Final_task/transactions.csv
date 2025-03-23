@@ -1,0 +1,24 @@
+transaction_id,category,amount,currency,description,type,date,user_id
+1,Groceries,350,RUB,Groceries for home,Expense,2025-03-23 16:00:00,1
+2,Work,250,RUB,Lunch,Expense,2025-03-24 16:00:00,1
+3,Salary,25000,RUB,Salary,Income,2025-03-25 16:00:00,1
+4,Housing,600,RUB,Household goods,Expense,2025-03-26 16:00:00,1
+5,Cafe,200,RUB,Coffee,Expense,2025-03-27 16:00:00,1
+6,Communication,200,RUB,Internet,Expense,2025-03-28 16:00:00,1
+7,Taxi,100,RUB,Ride,Expense,2025-03-29 16:00:00,1
+8,Other,800,RUB,Gift,Expense,2025-03-30 16:00:00,1
+9,Work,700,RUB,Lunch,Expense,2025-03-23 16:00:00,2
+10,Children,800,RUB,Toys,Expense,2025-03-24 16:00:00,2
+11,Groceries,500,RUB,Groceries for home,Expense,2025-03-25 16:00:00,2
+12,Housing,300,RUB,Furniture,Expense,2025-03-26 16:00:00,2
+13,Cafe,250,RUB,Dinner,Expense,2025-03-27 16:00:00,2
+14,Communication,300,RUB,Internet,Expense,2025-03-28 16:00:00,3
+15,Taxi,200,RUB,Ride,Expense,2025-03-29 16:00:00,3
+16,Other,900,RUB,Entertainment,Expense,2025-03-30 16:00:00,3
+17,Work,100,RUB,Lunch,Expense,2025-03-23 16:00:00,4
+18,Children,900,RUB,Books,Expense,2025-03-24 16:00:00,4
+19,Groceries,600,RUB,Groceries for home,Expense,2025-03-25 16:00:00,4
+20,Housing,400,RUB,Dishes,Expense,2025-03-26 16:00:00,5
+21,Cafe,300,RUB,Lunch,Expense,2025-03-27 16:00:00,5
+22,Communication,400,RUB,Internet,Expense,2025-03-28 16:00:00,5
+23,Taxi,300,RUB,Ride,Expense,2025-03-29 16:00:00,5
