@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from ..db_conf import Base
+from .user_group import user_group_association
 
 class User(Base):
     __tablename__ = 'users'
@@ -15,3 +16,5 @@ class User(Base):
     active = Column(Boolean, default=True)
 
     transactions = relationship("Transaction", back_populates="user")
+    groups = relationship("Group", secondary=user_group_association, back_populates="users")
+    owned_groups = relationship("Group", back_populates="owner", foreign_keys='Group.owner_id')

@@ -1,0 +1,4 @@
+id,name,description,created_at,owner_id
+1,Group1,Group 1 description,2023-01-01 12:00:00,1
+2,Group2,Group 2 description,2023-01-01 12:00:00,2
+3,Group3,Group 3 description,2023-01-01 12:00:00,3

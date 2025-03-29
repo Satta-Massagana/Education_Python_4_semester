@@ -4,16 +4,21 @@ import uvicorn
 import csv
 from db.models.user_model import User
 from db.models.transaction_model import Transaction
-from db.db_conf import Base, DATABASE_URL, engine, SessionLocal
+from db.models.group_model import Group
+from db.db_conf import SessionLocal
 from api.v1.users import user_router
 from api.v1.transactions import transaction_router
+from api.v1.groups import groups_router
+from db.db_conf import engine, Base
 
 app = FastAPI()
 app.include_router(user_router)
 app.include_router(transaction_router)
+app.include_router(groups_router)
 
 def load_data_from_csv():
     session = SessionLocal()
+    Base.metadata.create_all(engine)
     
     # Загрузка пользователей
     if session.query(User).first() is None:
@@ -31,7 +36,7 @@ def load_data_from_csv():
                 )
                 session.add(user)
         session.commit()
-    
+
     # Загрузка транзакций
     if session.query(Transaction).first() is None:
         with open('./Final_task/transactions.csv', 'r', encoding='utf-8') as file:
@@ -48,6 +53,22 @@ def load_data_from_csv():
                 )
                 session.add(transaction)
         session.commit()
+
+    # Загрузка групп
+    if session.query(Group).first() is None:
+        with open('./Final_task/groups.csv', 'r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                group = Group(
+                    id=row['id'],
+                    name=row['name'],
+                    description=row['description'],
+                    created_at=datetime.strptime(row['created_at'], '%Y-%m-%d %H:%M:%S'),
+                    owner_id=int(row['owner_id'])
+                )
+                session.add(group)
+        session.commit()
+
     session.close()
 
 # Загрузка данных при старте
