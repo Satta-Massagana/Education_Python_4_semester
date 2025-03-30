@@ -9,12 +9,14 @@ from db.db_conf import SessionLocal
 from api.v1.users import user_router
 from api.v1.transactions import transaction_router
 from api.v1.groups import groups_router
+from api.v1.auth import auth_router
 from db.db_conf import engine, Base
 
 app = FastAPI()
 app.include_router(user_router)
 app.include_router(transaction_router)
 app.include_router(groups_router)
+app.include_router(auth_router)
 
 def load_data_from_csv():
     session = SessionLocal()

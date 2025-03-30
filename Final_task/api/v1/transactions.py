@@ -2,7 +2,6 @@ from schemes.transaction import TransactionCreate, TransactionUpdate
 from db.db_conf import get_db, SessionType
 from fastapi import Depends, APIRouter, HTTPException
 from datetime import datetime
-
 from db.models.transaction_model import Transaction
 
 transaction_router = APIRouter(prefix="/transactions", tags=["transactions"])

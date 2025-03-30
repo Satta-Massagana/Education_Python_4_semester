@@ -1,9 +1,7 @@
-
 from schemes.user import UserCreate, UserUpdate
 from db.db_conf import get_db, SessionType
 from fastapi import Depends, APIRouter, HTTPException
 from datetime import datetime
-
 from db.models.user_model import User
 
 user_router = APIRouter(prefix="/users", tags=["users"])
