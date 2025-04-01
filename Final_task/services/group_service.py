@@ -36,9 +36,9 @@ class GroupService:
         """Retrieves a group by ID."""
         return self.db.query(Group).filter(Group.id == group_id).first()
 
-    def list_groups(self, skip: int = 0, limit: int = 100) -> List[Group]: #Corrected line
+    def list_groups(self, owner_id: int, skip: int = 0, limit: int = 100) -> List[Group]: #Corrected line
         """Lists groups with pagination."""
-        return self.db.query(Group).offset(skip).limit(limit).all()
+        return self.db.query(Group).filter(Group.owner_id == owner_id).offset(skip).limit(limit).all() #Corrected line
 
     def update_group(self, group_id: int, group_update: GroupUpdate) -> Group:
         """Updates a group."""

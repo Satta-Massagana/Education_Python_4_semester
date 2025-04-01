@@ -37,11 +37,14 @@ async def create_transaction(transaction: TransactionCreate, db: SessionType = D
     }
 
 @transaction_router.get("/{transaction_id}")
-async def read_transaction(transaction_id: int, db: SessionType = Depends(get_db)):
+async def read_transaction(transaction_id: int, db: SessionType = Depends(get_db), user: User = Depends(get_current_user)):
     """
     Получить информацию о транзакции по ID.
     """
-    transaction = db.query(Transaction).filter(Transaction.id == transaction_id).first()
+    transaction = db.query(Transaction).filter(
+        Transaction.id == transaction_id,
+        Transaction.user_id == user.id
+    ).first()
     if not transaction:
         raise HTTPException(status_code=404, detail=f"Transaction with ID {transaction_id} not found")
     return {
@@ -74,8 +77,6 @@ async def update_transaction(transaction_id: int, transaction: TransactionUpdate
         existing_transaction.description = transaction.description
     if transaction.type is not None:
         existing_transaction.type = transaction.type
-    if transaction.user_id is not None:
-        existing_transaction.user_id = transaction.user_id
 
     db.commit()
     db.refresh(existing_transaction)
@@ -91,11 +92,14 @@ async def update_transaction(transaction_id: int, transaction: TransactionUpdate
     }
 
 @transaction_router.delete("/{transaction_id}")
-async def delete_transaction(transaction_id: int, db: SessionType = Depends(get_db)):
+async def delete_transaction(transaction_id: int, db: SessionType = Depends(get_db), user: User = Depends(get_current_user)):
     """
     Удалить транзакцию по ID.
     """
-    transaction = db.query(Transaction).filter(Transaction.id == transaction_id).first()
+    transaction = db.query(Transaction).filter(
+        Transaction.id == transaction_id,
+        Transaction.user_id == user.id
+    ).first()
     if not transaction:
         raise HTTPException(status_code=404, detail=f"Transaction with ID {transaction_id} not found")
     db.delete(transaction)
