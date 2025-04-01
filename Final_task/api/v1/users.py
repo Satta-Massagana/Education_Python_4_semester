@@ -3,6 +3,7 @@ from db.db_conf import get_db, SessionType
 from fastapi import Depends, APIRouter, HTTPException
 from datetime import datetime
 from db.models.user_model import User
+from services.auth_service import AuthService
 
 user_router = APIRouter(prefix="/users", tags=["users"])
 
@@ -11,27 +12,14 @@ async def create_user(user: UserCreate, db: SessionType = Depends(get_db)):
     """
     Создать нового пользователя.
     """
-    new_user = User(
-        first_name=user.first_name,
-        last_name=user.last_name,
-        login=user.login,
-        email=user.email,
-        password_hash=user.password_hash,
-        created_at=datetime.utcnow(),
-        active=user.active
-    )
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-    return {
-        "id": new_user.id,
-        "first_name": new_user.first_name,
-        "last_name": new_user.last_name,
-        "login": new_user.login,
-        "email": new_user.email,
-        "active": new_user.active,
-        "created_at": new_user.created_at
-    }
+
+    auth_service = AuthService(db)
+    existing_user = auth_service.get_user_by_login(user.login)
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Login already taken")
+    
+    new_user = auth_service.create_user(user)
+    return new_user
 
 @user_router.get("/{user_id}")
 async def read_user(user_id: int, db: SessionType = Depends(get_db)):

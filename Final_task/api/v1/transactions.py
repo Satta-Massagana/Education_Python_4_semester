@@ -3,12 +3,13 @@ from db.db_conf import get_db, SessionType
 from fastapi import Depends, APIRouter, HTTPException
 from datetime import datetime
 from db.models.transaction_model import Transaction
+from api.v1.auth_middleware import get_current_user, User
 
 transaction_router = APIRouter(prefix="/transactions", tags=["transactions"])
 
 # CRUD операции для транзакций
 @transaction_router.post("/")
-async def create_transaction(transaction: TransactionCreate, db: SessionType = Depends(get_db)):
+async def create_transaction(transaction: TransactionCreate, db: SessionType = Depends(get_db), user: User = Depends(get_current_user)):
     """
     Создать новую транзакцию.
     """
@@ -19,7 +20,7 @@ async def create_transaction(transaction: TransactionCreate, db: SessionType = D
         description=transaction.description,
         type=transaction.type,
         date=datetime.utcnow(),
-        user_id=transaction.user_id
+        user_id=user.id
     )
     db.add(new_transaction)
     db.commit()
