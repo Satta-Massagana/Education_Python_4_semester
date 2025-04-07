@@ -1,0 +1,41 @@
+.app-wrapper {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 56px;
+}
+
+.side-panel {
+  width: 250px;
+  min-width: 250px;
+  background: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(0);
+
+  &.closed {
+    transform: translateX(-250px);
+    min-width: 0;
+    width: 0;
+  }
+
+  .nav-link {
+    padding: 0.5rem 1rem;
+    color: #212529;
+
+    &:hover {
+      background: #e9ecef;
+    }
+  }
+}
+
+.container {
+  flex: 1;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  margin-left: 0;
+  width: calc(100% - 250px);
+
+  &.panel-closed {
+    width: 100%;
+  }
+}

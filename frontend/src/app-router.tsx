@@ -1,7 +1,8 @@
 import { createHashRouter } from "react-router-dom";
 import AppLayout from "./layout/app-layout";
 import HomePage from "./pages/home/home-page";
-import AboutPage from "./pages/about/about-page";
+import AddExpensePage from "./pages/add-expense/add-expense-page";
+import LogoutPage from "./pages/logout/logout-page";
 
 export const appRouter = createHashRouter([{
   element: <AppLayout />,
@@ -11,8 +12,12 @@ export const appRouter = createHashRouter([{
       element: <HomePage />
     },
     {
-      path: '/about',
-      element: <AboutPage />
+      path: '/add-expense',
+      element: <AddExpensePage />
+    },
+    {
+      path: '/logout',
+      element: <LogoutPage />
     }
   ]
 }])
