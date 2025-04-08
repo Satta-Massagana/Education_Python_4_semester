@@ -1,0 +1,68 @@
+
+.et-button {
+  position: relative;
+  font-weight: bold;
+  background-color: transparent;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  padding: 1px 0 0;
+  box-shadow: 0 2px rgba(0, 0, 0, 0.41);
+
+  &:active:not(:disabled) {
+    filter: brightness(82%);
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    .et-button__body {
+      color: #ffffff60;
+      text-shadow: -1px -1px 0 #00000060, -1px 1px 0 #00000060, 1px -1px 0 #00000060, 1px 1px 0 #00000060;
+    }
+  }
+
+  &__body {
+    padding: 8px 16px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+    color: white;
+    text-shadow: -1px -1px 0 #000000, -1px 1px 0 #000000, 1px -1px 0 #000000, 1px 1px 0 #000000
+  }
+
+  &_primary {
+    background-color: #88f3ff;
+    .et-button__body {
+      background: var(--bg-primary);
+    }
+  }
+  
+  &_secondary {
+    background-color: #ecf4ff;
+    .et-button__body {
+      background: var(--bg-secondary);
+    }
+  }
+  
+  &_success {
+    background-color: #53c3a7;
+    .et-button__body {
+      background: var(--bg-success);
+    }
+  }
+  
+  &_warning {
+    background-color: #ffdcab;
+    .et-button__body {
+      background: var(--bg-warning);
+    }
+  }
+  
+  &_danger {
+    background-color: #eb6e6e;
+    .et-button__body {
+      background: var(--bg-danger);
+    }
+  }
+  
+}
