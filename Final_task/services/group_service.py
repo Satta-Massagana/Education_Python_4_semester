@@ -46,7 +46,7 @@ class GroupService:
         if not db_group:
             return None
 
-        for key, value in group_update.dict(exclude_unset=True).items():
+        for key, value in group_update.model_dump(exclude_unset=True).items():
             if key == "user_ids":
                 db_group.users.clear()
                 if value:

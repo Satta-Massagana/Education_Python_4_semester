@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from datetime import datetime
 import uvicorn
 import csv
+from contextlib import asynccontextmanager
 from db.models.user_model import User
 from db.models.transaction_model import Transaction
 from db.models.group_model import Group
@@ -74,10 +75,12 @@ def load_data_from_csv():
     session.close()
 
 # Загрузка данных при старте
-@app.on_event("startup")
-async def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Code to run on startup
     load_data_from_csv()
-
+    yield
+    # Code to run on shutdown would go here
 
 if __name__ == "__main__":
     uvicorn.run(

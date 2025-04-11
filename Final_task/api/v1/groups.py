@@ -9,7 +9,7 @@ from api.v1.auth_middleware import get_current_user, User
 
 groups_router = APIRouter(prefix="/groups", tags=["groups"])
 
-@groups_router.post("/", response_model=GroupUpdate, status_code=status.HTTP_201_CREATED)
+@groups_router.post("/", response_model=GroupList, status_code=status.HTTP_201_CREATED)
 def create_group(group_create: GroupCreate, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     """Creates a new group."""
     group_service = GroupService(db)
@@ -32,7 +32,7 @@ def list_groups(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), 
     group_service = GroupService(db)
     return group_service.list_groups(user.id, skip, limit)
 
-@groups_router.put("/{group_id}", response_model=GroupUpdate)
+@groups_router.put("/{group_id}", response_model=GroupList)
 def update_group(group_id: int, group_update: GroupUpdate, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     """Updates a group."""
     group_service = GroupService(db)
