@@ -22,6 +22,9 @@ const AppLayout: FC = () => {
           <Nav.Link as={Link} to="/add-expense">
             Add Expense
           </Nav.Link>
+          <Nav.Link as={Link} to="/homework-11">
+            Homework 11
+          </Nav.Link>
           <Nav.Link as={Link} to="/logout">
             Logout
           </Nav.Link>
