@@ -11,6 +11,7 @@ from api.v1.users import user_router
 from api.v1.transactions import transaction_router
 from api.v1.groups import groups_router
 from api.v1.auth import auth_router
+from api.v1.analytics import analytics_router
 from db.db_conf import engine, Base
 
 app = FastAPI()
@@ -18,6 +19,7 @@ app.include_router(user_router)
 app.include_router(transaction_router)
 app.include_router(groups_router)
 app.include_router(auth_router)
+app.include_router(analytics_router)
 
 def load_data_from_csv():
     session = SessionLocal()
@@ -77,10 +79,8 @@ def load_data_from_csv():
 # Загрузка данных при старте
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Code to run on startup
     load_data_from_csv()
     yield
-    # Code to run on shutdown would go here
 
 if __name__ == "__main__":
     uvicorn.run(

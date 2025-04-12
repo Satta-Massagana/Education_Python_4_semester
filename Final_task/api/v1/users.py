@@ -4,6 +4,8 @@ from fastapi import Depends, APIRouter, HTTPException
 from datetime import datetime
 from db.models.user_model import User
 from services.auth_service import AuthService
+from fastapi import status
+from services.auth_service import pwd_context
 
 user_router = APIRouter(prefix="/users", tags=["users"])
 
@@ -84,3 +86,30 @@ async def delete_user(user_id: int, db: SessionType = Depends(get_db)):
     db.delete(user)
     db.commit()
     return {"message": f"User with ID {user_id} has been deleted"}
+
+@user_router.patch("/{user_id}/reset-password", status_code=status.HTTP_200_OK)
+async def reset_user_password(
+    user_id: int, 
+    db: SessionType = Depends(get_db)
+):
+    """
+    Reset user password to default 'test' (hashed).
+    Requires authentication.
+    """
+    # Find the user
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User with ID {user_id} not found"
+        )
+    
+    # Hash the default password "test"
+    hashed_password = pwd_context.hash("test")
+    
+    # Update the user's password
+    user.password_hash = hashed_password
+    db.commit()
+    db.refresh(user)
+    
+    return {"message": f"Password for user {user_id} reset successfully"}
