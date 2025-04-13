@@ -14,7 +14,13 @@ from api.v1.auth import auth_router
 from api.v1.analytics import analytics_router
 from db.db_conf import engine, Base
 
-app = FastAPI()
+# Загрузка данных при старте
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    load_data_from_csv()
+    yield
+
+app = FastAPI(lifespan=lifespan)
 app.include_router(user_router)
 app.include_router(transaction_router)
 app.include_router(groups_router)
@@ -27,7 +33,7 @@ def load_data_from_csv():
     
     # Загрузка пользователей
     if session.query(User).first() is None:
-        with open('./Final_task/users.csv', 'r', encoding='utf-8') as file:
+        with open('./users.csv', 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 user = User(
@@ -44,7 +50,7 @@ def load_data_from_csv():
 
     # Загрузка транзакций
     if session.query(Transaction).first() is None:
-        with open('./Final_task/transactions.csv', 'r', encoding='utf-8') as file:
+        with open('./transactions.csv', 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 transaction = Transaction(
@@ -61,7 +67,7 @@ def load_data_from_csv():
 
     # Загрузка групп
     if session.query(Group).first() is None:
-        with open('./Final_task/groups.csv', 'r', encoding='utf-8') as file:
+        with open('./groups.csv', 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 group = Group(
@@ -75,12 +81,6 @@ def load_data_from_csv():
         session.commit()
 
     session.close()
-
-# Загрузка данных при старте
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    load_data_from_csv()
-    yield
 
 if __name__ == "__main__":
     uvicorn.run(

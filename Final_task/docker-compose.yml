@@ -1,0 +1,65 @@
+version: '3.7'
+services:
+
+  postgres:
+    image: postgres:latest
+    env_file: ./db/.env
+    volumes:
+      - ./db/pgdata:/var/lib/postgresql/data
+  # restart: always
+    ports:
+      - 5435:5432
+
+  # cache:
+  #   image: redis:latest
+  #   volumes:
+  #     - cache:/data
+  #   expose:
+  #     - "6379"
+  #   ports:
+  #     - 6379:6379
+
+  solution:
+    image: my_app2:latest
+    volumes:
+      - ./:/app
+    env_file: ./.env
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+  #   - cache
+    ports:
+      - 8090:8080
+
+  # migrate:
+  #   volumes:
+  #     - ./solution:/app
+  #   env_file: ./config/solution/.env
+  #   build:
+  #     context: ./solution/
+  #     dockerfile: Dockerfile_migrate
+  #   command: 
+  #     - /bin/bash
+  #     - -c
+  #     - |
+  #      alembic revision --autogenerate 
+  #      alembic upgrade head
+  #   depends_on:
+  #     - postgres
+
+  # nginx:
+  #   image: nginx:latest
+  #   volumes:
+  #     - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./config/nginx/solution.conf:/etc/nginx/conf.d/default.conf
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - solution
+
+# volumes:
+#   cache:
+#     driver: local
+
