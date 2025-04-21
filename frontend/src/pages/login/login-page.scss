@@ -1,0 +1,44 @@
+.login-container {
+  margin-top: 100px;
+
+  h2 {
+    font-weight: bold;
+  }
+
+  .form-group {
+    label {
+      font-weight: 500;
+    }
+
+    .form-control {
+      position: relative;
+    }
+
+    .field-error {
+      position: absolute;
+      bottom: -18px;
+      left: 0;
+      font-size: 0.875rem;
+      color: #dc3545; // Bootstrap danger color
+      white-space: nowrap;
+    }
+  }
+
+  .btn {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .registration-container {
+    margin-bottom: 16px;
+    .registration-link {
+      color: #0d6efd; // Bootstrap primary
+      text-decoration: none;
+      font-weight: 500;
+    
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

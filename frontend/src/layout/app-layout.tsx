@@ -25,6 +25,12 @@ const AppLayout: FC = () => {
           <Nav.Link as={Link} to="/homework-11">
             Homework 11
           </Nav.Link>
+          <Nav.Link as={Link} to="/login">
+            Login
+          </Nav.Link>
+          <Nav.Link as={Link} to="/register">
+            Register
+          </Nav.Link>
           <Nav.Link as={Link} to="/logout">
             Logout
           </Nav.Link>

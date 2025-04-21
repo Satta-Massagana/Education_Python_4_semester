@@ -4,6 +4,8 @@ import HomePage from "./pages/home/home-page";
 import AddExpensePage from "./pages/add-expense/add-expense-page";
 import LogoutPage from "./pages/logout/logout-page";
 import Homework11Page from "./pages/homework11/homework11-page";
+import LoginPage from "./pages/login/login-page";
+import RegistrationPage from "./pages/registration/registration-page";
 
 export const appRouter = createHashRouter([{
   element: <AppLayout />,
@@ -19,6 +21,14 @@ export const appRouter = createHashRouter([{
     {
       path: '/homework-11',
       element: <Homework11Page />
+    },
+    {
+      path: '/login',
+      element: <LoginPage />
+    },
+    {
+      path: '/register',
+      element: <RegistrationPage />
     },
     {
       path: '/logout',
