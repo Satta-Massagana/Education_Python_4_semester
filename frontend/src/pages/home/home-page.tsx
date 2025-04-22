@@ -2,8 +2,12 @@ import { FC } from "react";
 import EtButton from "../../components/et-button/et-button";
 import { EtButtonStyle } from "../../components/et-button/et-button-style";
 import "./home-page.scss";
+import { config } from "../../services/config-service";
 
 const HomePage: FC = () => {
+
+  const apiUrl = config.API_URL;
+
   return (
     <div className="app-page">
       <h3>Home page</h3>
@@ -41,6 +45,11 @@ const HomePage: FC = () => {
           disabled
         />
       </div>
+
+      <div className="config-info">
+        API URL: {apiUrl}
+      </div>
+
     </div>
   );
 };

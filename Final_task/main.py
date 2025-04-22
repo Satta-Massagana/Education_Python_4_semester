@@ -13,6 +13,7 @@ from api.v1.groups import groups_router
 from api.v1.auth import auth_router
 from api.v1.analytics import analytics_router
 from db.db_conf import engine, Base
+from fastapi.middleware.cors import CORSMiddleware
 
 # Загрузка данных при старте
 @asynccontextmanager
@@ -21,6 +22,14 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 app.include_router(user_router)
 app.include_router(transaction_router)
 app.include_router(groups_router)

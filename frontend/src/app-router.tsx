@@ -6,33 +6,39 @@ import LogoutPage from "./pages/logout/logout-page";
 import Homework11Page from "./pages/homework11/homework11-page";
 import LoginPage from "./pages/login/login-page";
 import RegistrationPage from "./pages/registration/registration-page";
+import RequireAuth from "./components/auth/require-auth";
 
 export const appRouter = createHashRouter([{
   element: <AppLayout />,
   children: [
     {
-      path: '/',
-      element: <HomePage />
-    },
-    {
-      path: '/add-expense',
-      element: <AddExpensePage />
-    },
-    {
-      path: '/homework-11',
-      element: <Homework11Page />
-    },
-    {
       path: '/login',
       element: <LoginPage />
     },
     {
-      path: '/register',
-      element: <RegistrationPage />
-    },
-    {
-      path: '/logout',
-      element: <LogoutPage />
+      element: <RequireAuth redirectPath="/login" />,
+      children: [
+        {
+          path: '/',
+          element: <HomePage />
+        },
+        {
+          path: '/add-expense',
+          element: <AddExpensePage />
+        },
+        {
+          path: '/homework-11',
+          element: <Homework11Page />
+        },
+        {
+          path: '/register',
+          element: <RegistrationPage />
+        },
+        {
+          path: '/logout',
+          element: <LogoutPage />
+        }
+      ]
     }
   ]
 }])

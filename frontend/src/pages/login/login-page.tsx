@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
+import { Form, Alert, Container, Row, Col } from 'react-bootstrap';
 import './login-page.scss';
 import EtButton from '../../components/et-button/et-button';
 import { EtButtonStyle } from '../../components/et-button/et-button-style';
+import { useAuthStateStore } from '../../state/auth/auth-state';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [touched, setTouched] = useState({ username: false, password: false });
   const [formError, setFormError] = useState('');
+  const authState = useAuthStateStore();
+  const navigate = useNavigate();
 
   const validate = () => ({
     username: !username.trim() ? 'Username is required.' : '',
@@ -23,7 +27,7 @@ const LoginPage: React.FC = () => {
     setTouched({ ...touched, [field]: true });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!isFormValid()) {
@@ -34,10 +38,35 @@ const LoginPage: React.FC = () => {
 
     setFormError('');
 
-    console.log('Submitting: ', {
-      username,
-      password
-    });
+    const body = new URLSearchParams();
+    body.append('grant_type', 'password');
+    body.append('username', username);
+    body.append('password', password);
+
+    try {
+      const response = await fetch('http://localhost:8080/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+        body,
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        setFormError(err.detail || 'Login failed.');
+        return;
+      }
+
+      const data = await response.json();
+      authState.setBearerToken(data.access_token);
+      navigate('/');
+
+    } catch (err) {
+      setFormError('Login failed. Please try again.');
+      console.error(err);
+    }
 
   };
 
