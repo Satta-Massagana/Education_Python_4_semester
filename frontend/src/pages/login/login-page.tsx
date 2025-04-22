@@ -44,10 +44,9 @@ const LoginPage: React.FC = () => {
   return (
     <Container className="login-container">
       <Row className="justify-content-md-center">
-        <Col md={4}>
+        <Col md={4} className="form-container">
           <h2 className="text-center mb-3">Login</h2>
           <Form noValidate onSubmit={handleSubmit}>
-            {formError && <Alert variant="danger">{formError}</Alert>}
 
             <Form.Group controlId="formUsername" className="mb-3 position-relative">
               <Form.Label>Username</Form.Label>
@@ -83,6 +82,8 @@ const LoginPage: React.FC = () => {
               <span>Don't have an account? </span>
               <a href="/#/register" className="registration-link">Register here</a>
             </div>
+
+            {formError && <Alert variant="danger">{formError}</Alert>}
 
             <EtButton
               label='Login'

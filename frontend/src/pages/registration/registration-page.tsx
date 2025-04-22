@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
+import { Form, Alert, Container, Row, Col } from 'react-bootstrap';
 import './registration-page.scss';
 import EtButton from '../../components/et-button/et-button';
 import { EtButtonStyle } from '../../components/et-button/et-button-style';
@@ -38,6 +38,17 @@ const RegistrationPage: React.FC = () => {
     return regex.test(password);
   };
 
+  const setAllTouched = (value: boolean) => {
+    setTouched({
+      firstName: value,
+      lastName: value,
+      email: value,
+      username: value,
+      password: value,
+      passwordConfirm: false,
+    });
+  }
+
   const validate = () => {
     const errors: Record<string, string> = {};
 
@@ -67,14 +78,7 @@ const RegistrationPage: React.FC = () => {
 
     if (!isFormValid) {
       setFormError('Please fix the errors before submitting.');
-      setTouched({
-        firstName: true,
-        lastName: true,
-        email: true,
-        username: true,
-        password: true,
-        passwordConfirm: true,
-      });
+      setAllTouched(true);
       return;
     }
 
@@ -84,12 +88,26 @@ const RegistrationPage: React.FC = () => {
 
   };
 
+  const handleReset = (e: React.FormEvent) => {
+    e.preventDefault();
+    setForm({
+      firstName: '',
+      lastName: '',
+      email: '',
+      username: '',
+      password: '',
+      passwordConfirm: '',
+    });
+    setAllTouched(false);
+    setFormError('');
+  }
+
   return (
     <Container className="registration-container">
       <Row className="justify-content-md-center">
-        <Col md={6}>
+        <Col md={6} className='form-container'>
           <h2 className="text-center mb-4">User Registration</h2>
-          <Form noValidate onSubmit={handleSubmit}>
+          <Form noValidate onSubmit={handleSubmit} onReset={handleReset}>
 
             {['firstName', 'lastName', 'email', 'username'].map((field) => (
               <Form.Group key={field} className="mb-4 position-relative" controlId={`form${field}`}>
@@ -148,6 +166,11 @@ const RegistrationPage: React.FC = () => {
                 label='Register'
                 style={ EtButtonStyle.primary }
                 type='submit'
+              />
+              <EtButton
+                label='Reset'
+                style={ EtButtonStyle.secondary }
+                type='reset'
               />
             </div>
 

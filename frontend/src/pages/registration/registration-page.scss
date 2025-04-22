@@ -1,10 +1,24 @@
-.registration-container {
-  margin-top: 80px;
-  margin-bottom: 40px;
+.form-container {
+  padding: 16px;
+  border-radius: 5px;
+  box-shadow: 1px 2px 5px #00000069;
+  background-color:hsla(30,100%,95%,1);
+  background-image:
+  radial-gradient(at 66% 89%, hsla(289,36%,67%,0.26) 0px, transparent 50%),
+  radial-gradient(at 0% 0%, hsla(328,74%,80%,0.25) 0px, transparent 50%);
 
   h2 {
     font-weight: bold;
+    color: antiquewhite;
+    text-shadow: -1px -1px 0 #00000060, -1px 1px 0 #00000060, 1px -1px 0 #00000060, 1px 1px 0 #00000060;
   }
+
+}
+
+
+.registration-container {
+  margin-top: 80px;
+  margin-bottom: 40px;
 
   .form-group {
     label {
@@ -34,6 +48,8 @@
 
   .button-container {
     margin-top: 40px;
+    display: flex;
+    gap: 10px;
   }
 
   .alert-container {
