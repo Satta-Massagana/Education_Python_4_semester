@@ -3,6 +3,8 @@ import { Form, Alert, Container, Row, Col } from 'react-bootstrap';
 import './registration-page.scss';
 import EtButton from '../../components/et-button/et-button';
 import { EtButtonStyle } from '../../components/et-button/et-button-style';
+import { config } from "../../services/config-service";
+import { useNavigate } from 'react-router-dom';
 
 const RegistrationPage: React.FC = () => {
   const [form, setForm] = useState({
@@ -22,8 +24,10 @@ const RegistrationPage: React.FC = () => {
     password: false,
     passwordConfirm: false,
   });
+  const navigate = useNavigate();
+  const apiUrl = config.API_URL;
 
-  const [formError, setFormError] = useState('');
+  const [formError, setFormError] = useState<string | {msg: string}[]>('');
 
   const handleChange = (field: string, value: string) => {
     setForm({ ...form, [field]: value });
@@ -34,7 +38,7 @@ const RegistrationPage: React.FC = () => {
   };
 
   const validatePassword = (password: string): boolean => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{10,}$/;
     return regex.test(password);
   };
 
@@ -59,7 +63,7 @@ const RegistrationPage: React.FC = () => {
     if (!form.password) {
       errors.password = 'Password is required.';
     } else if (!validatePassword(form.password)) {
-      errors.password = 'Password must be at least 8 characters, include uppercase, lowercase, and a number.';
+      errors.password = 'Password must be at least 10 characters, include uppercase, lowercase, and a number.';
     }
     if (!form.passwordConfirm) {
       errors.passwordConfirm = 'Please confirm your password.';
@@ -73,19 +77,58 @@ const RegistrationPage: React.FC = () => {
   const errors = validate();
   const isFormValid = Object.keys(errors).length === 0;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!isFormValid) {
       setFormError('Please fix the errors before submitting.');
-      setAllTouched(true);
+      setTouched({
+        firstName: true,
+        lastName: true,
+        email: true,
+        username: true,
+        password: true,
+        passwordConfirm: true,
+      });
       return;
     }
 
     setFormError('');
 
-    console.log('Submitting: ', form);
+    const payload = {
+      first_name: form.firstName,
+      last_name: form.lastName,
+      login: form.username,
+      email: form.email,
+      password: form.password,
+      active: true,
+    };
 
+    try {
+      const response = await fetch(`${apiUrl}auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        // const err = await response.json();
+        // setFormError(err.detail || 'Registration failed.');
+        setFormError('Registration failed. Please check data and try again.');
+        return;
+      }
+
+      const data = await response.json();
+      console.log('Registration successful', data);
+
+      navigate('/login');
+    } catch (err) {
+      console.error(err);
+      setFormError('Network error. Please try again.');
+    }
   };
 
   const handleReset = (e: React.FormEvent) => {
@@ -105,7 +148,7 @@ const RegistrationPage: React.FC = () => {
   return (
     <Container className="registration-container">
       <Row className="justify-content-md-center">
-        <Col md={6} className='form-container'>
+        <Col lg={8} xl={6} className='form-container'>
           <h2 className="text-center mb-4">User Registration</h2>
           <Form noValidate onSubmit={handleSubmit} onReset={handleReset}>
 
@@ -157,7 +200,10 @@ const RegistrationPage: React.FC = () => {
             </Form.Group>
 
             { formError && <div className='alert-container'>
-                <Alert variant="danger">{formError}</Alert>
+                <Alert variant="danger">
+                  { Array.isArray(formError) && formError.map((err, idx) => <div key={idx}>{err.msg}</div>) }
+                  { !(Array.isArray(formError)) && <div>{formError}</div> }
+                </Alert>
               </div>
             }
 

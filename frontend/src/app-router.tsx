@@ -16,6 +16,10 @@ export const appRouter = createHashRouter([{
       element: <LoginPage />
     },
     {
+      path: '/register',
+      element: <RegistrationPage />
+    },
+    {
       element: <RequireAuth redirectPath="/login" />,
       children: [
         {
@@ -29,10 +33,6 @@ export const appRouter = createHashRouter([{
         {
           path: '/homework-11',
           element: <Homework11Page />
-        },
-        {
-          path: '/register',
-          element: <RegistrationPage />
         },
         {
           path: '/logout',

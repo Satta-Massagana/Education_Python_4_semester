@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Alert, Container, Row, Col } from 'react-bootstrap';
 import './login-page.scss';
 import EtButton from '../../components/et-button/et-button';
 import { EtButtonStyle } from '../../components/et-button/et-button-style';
 import { useAuthStateStore } from '../../state/auth/auth-state';
 import { useNavigate } from 'react-router-dom';
+import { config } from "../../services/config-service";
 
 const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -13,6 +14,13 @@ const LoginPage: React.FC = () => {
   const [formError, setFormError] = useState('');
   const authState = useAuthStateStore();
   const navigate = useNavigate();
+  const apiUrl = config.API_URL;
+
+  useEffect(() => {
+    if (authState.hasBearerToken()) {
+      navigate('/');
+    }
+  }, [ authState ]);
 
   const validate = () => ({
     username: !username.trim() ? 'Username is required.' : '',
@@ -44,7 +52,7 @@ const LoginPage: React.FC = () => {
     body.append('password', password);
 
     try {
-      const response = await fetch('http://localhost:8080/auth/login', {
+      const response = await fetch(`${apiUrl}auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -73,7 +81,7 @@ const LoginPage: React.FC = () => {
   return (
     <Container className="login-container">
       <Row className="justify-content-md-center">
-        <Col md={4} className="form-container">
+        <Col md={8} lg={6} xl={4} className="form-container">
           <h2 className="text-center mb-3">Login</h2>
           <Form noValidate onSubmit={handleSubmit}>
 
