@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import './app-header.scss';
 import { useAuthStateStore } from "../state/auth/auth-state";
+import { useProfile } from "../api/auth/use-profile";
 
 interface AppHeaderProps {
   toggleSidePanel: () => void;
@@ -13,6 +14,7 @@ interface AppHeaderProps {
 const AppHeader: FC<AppHeaderProps> = ({ toggleSidePanel }) => {
 
   const authState = useAuthStateStore();
+  const userProfile = useProfile();
 
   return <Navbar expand="sm" className="app-header fixed-top">
       <button 
@@ -24,10 +26,10 @@ const AppHeader: FC<AppHeaderProps> = ({ toggleSidePanel }) => {
       <Navbar.Brand as={Link} to="/" className="header-title">
         Expense tracking app
       </Navbar.Brand>
-      { authState.hasBearerToken() && 
+      { authState.hasBearerToken() && userProfile.isSuccess && userProfile.data &&
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            Signed in
+            Signed as: { userProfile.data.first_name } { userProfile.data.last_name }
           </Navbar.Text>
         </Navbar.Collapse>
       }
