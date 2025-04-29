@@ -5,6 +5,7 @@ from schemes.user import UserCreate, UserLogin, UserResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from db.db_conf import get_db
 from sqlalchemy.orm import Session
+from api.v1.auth_middleware import get_current_user, User
 
 auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -29,3 +30,15 @@ async def login(user_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
     
     token = auth_service.create_access_token(user.id)
     return {"access_token": token, "token_type": "bearer"}
+
+@auth_router.get("/profile")
+def get_group(user: User = Depends(get_current_user)):
+    return {
+        "id": user.id,
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "login": user.login,
+        "email": user.email,
+        "active": user.active,
+        "created_at": user.created_at
+    }
