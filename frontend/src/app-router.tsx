@@ -7,6 +7,9 @@ import Homework11Page from "./pages/homework11/homework11-page";
 import LoginPage from "./pages/login/login-page";
 import RegistrationPage from "./pages/registration/registration-page";
 import RequireAuth from "./components/auth/require-auth";
+import ListExpenses from "./pages/list-expenses/list-expenses";
+import AddGroup from "./pages/add-group/add-group";
+import ListGroups from "./pages/list-groups/list-groups";
 
 export const appRouter = createHashRouter([{
   element: <AppLayout />,
@@ -29,6 +32,18 @@ export const appRouter = createHashRouter([{
         {
           path: '/add-expense',
           element: <AddExpensePage />
+        },
+        {
+          path: '/list-expenses',
+          element: <ListExpenses />
+        },
+        {
+          path: '/add-group',
+          element: <AddGroup />
+        },
+        {
+          path: '/list-groups',
+          element: <ListGroups />
         },
         {
           path: '/homework-11',

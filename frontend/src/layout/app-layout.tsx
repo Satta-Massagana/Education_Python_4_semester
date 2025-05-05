@@ -33,11 +33,17 @@ const AppLayout: FC = () => {
               <Nav.Link as={Link} to="/">
                 Home
               </Nav.Link>
+              <Nav.Link as={Link} to="/list-expenses">
+                List My Expenses
+              </Nav.Link>
               <Nav.Link as={Link} to="/add-expense">
                 Add Expense
               </Nav.Link>
-              <Nav.Link as={Link} to="/homework-11">
-                Homework 11
+              <Nav.Link as={Link} to="/list-groups">
+                List Groups
+              </Nav.Link>
+              <Nav.Link as={Link} to="/add-group">
+                Add Group
               </Nav.Link>
               <Nav.Link as={Link} to="/logout">
                 Logout

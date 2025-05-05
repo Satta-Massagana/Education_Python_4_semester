@@ -1,0 +1,21 @@
+
+.add-expense-form {
+
+  .invalid-feedback {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    font-size: 0.875rem;
+    color: #dc3545;
+    white-space: nowrap;
+  }
+
+  .form-label {
+    margin-top: 8px;
+  }
+
+  .submit-button {
+    margin-top: 16px;
+  }
+
+}
