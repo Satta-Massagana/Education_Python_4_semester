@@ -1,6 +1,6 @@
 from schemes.transaction import TransactionCreate, TransactionUpdate
 from db.db_conf import get_db, SessionType
-from fastapi import Depends, APIRouter, HTTPException
+from fastapi import Depends, APIRouter, HTTPException, Query
 from datetime import datetime
 from db.models.transaction_model import Transaction
 from api.v1.auth_middleware import get_current_user, User
@@ -57,6 +57,41 @@ async def read_transaction(transaction_id: int, db: SessionType = Depends(get_db
         "description": transaction.description,
         "type": transaction.type
     }
+
+@transaction_router.get("/")
+async def read_transactions(
+    db: SessionType = Depends(get_db),
+    user: User = Depends(get_current_user),
+    limit: int = Query(10, ge=1, le=100),
+    offset: int = Query(0, ge=0)
+):
+    """
+    Получить список транзакций пользователя.
+    """
+
+    query = db.query(Transaction).filter(Transaction.user_id == user.id)
+    total_count = query.count()
+    transactions = query.offset(offset).limit(limit).all()
+
+    def parse_transaction(transaction: Transaction):
+        return {
+            "id": transaction.id,
+            "user_id": transaction.user_id,
+            "date": transaction.date,
+            "category": transaction.category,
+            "amount": transaction.amount,
+            "currency": transaction.currency,
+            "description": transaction.description,
+            "type": transaction.type
+        }
+
+    return {
+        "total_count": total_count,
+        "limit": limit,
+        "offset": offset,
+        "items": [parse_transaction(transaction) for transaction in transactions]
+    }
+
 
 @transaction_router.put("/{transaction_id}")
 async def update_transaction(transaction_id: int, transaction: TransactionUpdate, db: SessionType = Depends(get_db)):
