@@ -1,6 +1,6 @@
 
 import { useState, FC, useMemo } from 'react';
-import { Table, Button, Spinner, Alert, Modal } from 'react-bootstrap';
+import { Table, Spinner, Alert, Modal } from 'react-bootstrap';
 import useTransactions from '../../api/transactions/use-transactions';
 import useDeleteTransaction from '../../api/transactions/use-delete-transaction';
 
@@ -58,7 +58,7 @@ export const ListExpenses: FC = () => {
             <th>Date</th>
             <th>Category</th>
             <th>Amount</th>
-            <th>Description</th>
+            <th className="d-none d-md-table-cell">Description</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -68,7 +68,7 @@ export const ListExpenses: FC = () => {
               <td>{expense.date.split('T')[0]}</td>
               <td>{expense.category}</td>
               <td>{expense.amount}</td>
-              <td>{expense.description}</td>
+              <td className="d-none d-md-table-cell">{expense.description}</td>
               <td>
                 <EtButton
                   label="Delete"

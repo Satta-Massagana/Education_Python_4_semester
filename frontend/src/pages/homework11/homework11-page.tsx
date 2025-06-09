@@ -34,7 +34,7 @@ const Homework11Page: FC = () => {
   }
 
   const task1 = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       logMessage("1. Начало синхронного кода"); // Синхронный код
 
       setTimeout(() => {
@@ -55,7 +55,7 @@ const Homework11Page: FC = () => {
   }
 
   const task2 = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       fetchData('/api/users')
         .then((response: any) => {
           logMessage('Список пользователей:');

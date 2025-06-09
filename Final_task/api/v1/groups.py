@@ -4,6 +4,7 @@ from db.db_conf import get_db
 from services.group_service import GroupService
 from schemes.group import GroupCreate, GroupUpdate, GroupList
 from db.models.user_model import User
+from db.models.group_model import Group
 from typing import List
 from api.v1.auth_middleware import get_current_user, User
 
@@ -26,11 +27,28 @@ def get_group(group_id: int, db: Session = Depends(get_db), user: User = Depends
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="You are not the owner of this group")
     return db_group
 
-@groups_router.get("/", response_model=List[GroupList])
-def list_groups(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+@groups_router.get("/")
+def list_groups(offset: int = 0, limit: int = 100, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     """Lists groups with pagination."""
     group_service = GroupService(db)
-    return group_service.list_groups(user.id, skip, limit)
+    all_groups = group_service.list_user_groups(user.id)
+    groups = all_groups[offset:offset + limit]
+
+    def parse_group(group: Group):
+        return {
+            "id": group.id,
+            # "owner_id": group.owner_id,
+            # "name": group.name,
+            # "description": group.description,
+            "user_ids": []
+        }
+
+    return {
+        "total_count": all_groups.count,
+        "limit": limit,
+        "offset": offset,
+        "items": [parse_group(group) for group in groups]
+    }
 
 @groups_router.put("/{group_id}", response_model=GroupList)
 def update_group(group_id: int, group_update: GroupUpdate, db: Session = Depends(get_db), user: User = Depends(get_current_user)):

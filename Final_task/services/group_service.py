@@ -40,6 +40,37 @@ class GroupService:
         """Lists groups with pagination."""
         return self.db.query(Group).filter(Group.owner_id == owner_id).offset(skip).limit(limit).all() #Corrected line
 
+    def list_user_groups(self, user_id: int) -> List[Group]:
+        """
+        Lists groups that a user owns or is a member of, with pagination.
+
+        Args:
+            user_id: The ID of the user.
+            skip: The number of records to skip.
+            limit: The maximum number of records to return.
+
+        Returns:
+            A list of Group objects that the user owns or is a member of.
+        """
+        user = self.db.query(User).filter(User.id == user_id).first()
+        if not user:
+            return []
+
+        owned_groups = self.db.query(Group).filter(Group.owner_id == user_id).all()
+        member_groups = user.groups
+
+        # Combine the lists and remove duplicates, preserving order as much as possible
+        all_groups = []
+        seen_group_ids = set()
+
+        for group in owned_groups + member_groups:
+            if group.id not in seen_group_ids:
+                all_groups.append(group)
+                seen_group_ids.add(group.id)
+
+        return all_groups
+
+
     def update_group(self, group_id: int, group_update: GroupUpdate) -> Group:
         """Updates a group."""
         db_group = self.get_group(group_id)
